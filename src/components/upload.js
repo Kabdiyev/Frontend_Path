@@ -15,6 +15,18 @@ const MIT_FIELDS = [
     'Экзистенциальный'
 ];
 
+const RU_EN_MAPPING = {
+    'Лингвистический': 'Linguistic',
+    'Логико-математический': 'Logical–mathematical',
+    'Музыкальный': 'Musical',
+    'Кинестетический': 'Bodily–kinesthetic',
+    'Пространственный': 'Spatial',
+    'Межличностный': 'Interpersonal',
+    'Внутриличностный': 'Intra–personal',
+    'Натуралистический': 'Naturalistic',
+    'Экзистенциальный': 'Existential'
+};
+
 const Upload = () => {
     const { pdfId } = useParams();
     const [file, setFile] = useState(null);
@@ -29,7 +41,7 @@ const Upload = () => {
 
     useEffect(() => {
         if (shouldRedirect && pdfId) {
-            navigate(`/report1/${pdfId}`);
+            navigate(`/results/${pdfId}`);
         }
     }, [shouldRedirect, pdfId, navigate]);
 
@@ -44,11 +56,16 @@ const Upload = () => {
         setIsLoading(true);
         setErrorMessage('');
 
+        const englishMitInput = Object.keys(mitInput).reduce((prev, key) => {
+            const englishKey = RU_EN_MAPPING[key] || key; // Use original key if no mapping found
+            return { ...prev, [englishKey]: mitInput[key] };
+        }, {});
+
         const formData = new FormData();
         formData.append('pdf_id', pdfId);
         formData.append('file', file);
         formData.append('MBTI', mbti);
-        formData.append('MIT', JSON.stringify(mitInput));
+        formData.append('MIT', JSON.stringify(englishMitInput));
 
         const token = localStorage.getItem('access_token');
 
