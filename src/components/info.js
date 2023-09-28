@@ -48,6 +48,33 @@ const Info = () => {
         }
     }, [shouldRedirect, pdfId, navigate]);
 
+    // const [selectedSpheres, setSelectedSpheres] = useState({
+    //     1: "",
+    //     2: "",
+    //     3: "",
+    //     4: "",
+    //     5: ""
+    // });
+
+    // const dropdownValues = [
+    //     "Образование",
+    //     "Услуги",
+    //     "Социальные науки",
+    //     "Гуманитарные науки",
+    //     "Здравоохранение",
+    //     "Искусство",
+    //     "Бизнес и управление",
+    //     "Национальная оборона и безопасность",
+    //     "Естественные науки, математика и статистика",
+    //     "Инженерия",
+    //     "Сельское хозяйство и биоресурсы",
+    //     "ИТ"
+    // ];
+
+    // const handleSphereChange = (key, value) => {
+    //     setSelectedSpheres(prev => ({ ...prev, [key]: value }));
+    // };
+
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -58,10 +85,16 @@ const Info = () => {
             return;
         }
 
+
+
         setIsLoading(true);
         setErrorMessage('');
 
         const formData = new FormData();
+
+        // Object.keys(selectedSpheres).forEach(key => {
+        //     formData.append(`Sphere_${key}`, selectedSpheres[key]);
+        // });
 
         // Only append the photo if it's present
         if (photo) {
@@ -71,7 +104,8 @@ const Info = () => {
         formData.append('Name', Name);
         formData.append('Grade', Grade);
         formData.append('Date_of_birth', Date_of_birth);
-        formData.append('Google_drive', Google_drive)
+        formData.append('Google_drive', Google_drive);
+        // formData.append('selectedSpheres', JSON.stringify(selectedSpheres));
 
         const token = localStorage.getItem('access_token');
 
@@ -198,6 +232,30 @@ const Info = () => {
                                     onChange={handleGoogledriveChange}
                                 />
                             </div>
+                            {/* <div className="mb-3">
+                                <label className="form-label">Желаемые сферы</label>
+                                {
+                                    [1, 2, 3, 4, 5].map(key => (
+                                        <div className="row align-items-center mb-2" key={key}>
+                                            <label className="col-sm-1 col-form-label text-start">{key}</label>
+                                            <div className="col-sm-11">
+                                                <select
+                                                    className='form-control'
+                                                    value={selectedSpheres[key] || ""}
+                                                    onChange={(e) => handleSphereChange(key, e.target.value)}
+                                                >
+                                                    <option value="">Выберите сферу</option>
+                                                    {
+                                                        dropdownValues
+                                                            .filter(value => !Object.values(selectedSpheres).includes(value) || value === selectedSpheres[key])
+                                                            .map(value => <option key={value} value={value}>{value}</option>)
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </div> */}
 
                             <div className="d-grid gap-2">
                                 <button type="submit" className='btn btn-success btn-block' disabled={isLoading}>

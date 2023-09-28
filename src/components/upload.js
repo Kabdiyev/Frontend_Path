@@ -41,7 +41,7 @@ const Upload = () => {
 
     useEffect(() => {
         if (shouldRedirect && pdfId) {
-            navigate(`/results/${pdfId}`);
+            navigate(`/report1/${pdfId}`);
         }
     }, [shouldRedirect, pdfId, navigate]);
 
