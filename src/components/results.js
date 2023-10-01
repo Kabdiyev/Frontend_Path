@@ -81,6 +81,16 @@ const Results = () => {
         setFilteredData(filtered);
     }, [selectedDomain, filterTerms, tableData]);
 
+    useEffect(() => {
+        if (tableData && tableData.length > 0) {
+            const uniqueDomains = [...new Set(tableData.map(item => item.Domains))];
+            setDomains(uniqueDomains);
+            if (uniqueDomains.length > 0) {
+                setSelectedDomain(uniqueDomains[0]); // Set the first domain as the selected
+            }
+        }
+    }, [tableData]);
+
     const handleFilterChange = (field) => {
         const newFilterTerms = [...filterTerms];
 
@@ -160,10 +170,10 @@ const Results = () => {
                         <div className="card card-custom h-100 p-3">
                             <h1 className='mb-3'>Наилучшие Карьерные Пути</h1>
                             <select className='form-control' value={selectedDomain} onChange={(e) => setSelectedDomain(e.target.value)}>
-                                <option value=''>Все Домены</option>
                                 {domains.map(domain => (
                                     <option key={domain} value={domain}>{domain}</option>
                                 ))}
+                                <option value=''>Все Домены</option>
                             </select>
                             <div className="col-12 mt-3">
                                 <Link to={`/report3/${pdfId}`}>

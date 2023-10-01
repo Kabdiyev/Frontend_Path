@@ -32,3 +32,8 @@
 .container-upload button[type="submit"]:hover {
     color: lightgrey;
 }
+
+.custom-margin {
+    margin-bottom: 0.2rem !important;
+    /* Important might be needed to override Bootstrap styles */
+}

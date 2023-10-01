@@ -3,6 +3,38 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./assets/styles/Info.css";
 
+const proFields = [
+    "Бизнес и управление",
+    "Здравоохранение",
+    "Образование",
+    "Естественные науки, мат. и стат.",
+    "Инженерия",
+    "Информационные технологии",
+    "Соц. и Гум. науки",
+    "Искусство",
+    "Спорт",
+    "Туризм, транспорт и логистика",
+    "СелХоз и биоресурсы",
+    "Гос.служба и Нац. безопасность",
+];
+
+const RU_EN_MAPPING = {
+    "Бизнес и управлени": "Бизнес и управление",
+    "Здравоохранение": "Здравоохранение",
+    "Образование": "Образование",
+    "Естественные науки, мат. и стат.": "Естественные науки, математика и статистика",
+    "Инженерия": "Инженерия",
+    "Информационные технологии": "ИТ",
+    "Соц. и Гум. науки": "Социальные и Гуманитарные науки", // except гос служба
+    "Искусство": "Искусство",
+    "Спорт": "Спорт", //??
+    "Туризм, транспорт и логистика": "Услуги", //кроме спорта    
+    "СелХоз и биоресурсы": "Сельское хозяйство и биоресурсы",
+    "Гос.служба и Нац. безопасность": "Национальная оборона и безопасность", //гос служба
+};
+
+
+
 const Info = () => {
     const [photo, setPhoto] = useState(null);
     const [School, setSchool] = useState('');
@@ -15,6 +47,9 @@ const Info = () => {
     const [shouldRedirect, setShouldRedirect] = useState(false);
     const [pdfId, setPdfId] = useState('');
     const [schools, setSchools] = useState([]); // New state for schools list
+    const [proInput, setProInput] = useState(
+        proFields.reduce((prev, field) => ({ ...prev, [field]: '' }), {})
+    );
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -42,38 +77,8 @@ const Info = () => {
             navigate(`/upload/${pdfId}`);
         }
     }, [shouldRedirect, pdfId, navigate]);
-    useEffect(() => {
-        if (shouldRedirect && pdfId) {
-            navigate(`/upload/${pdfId}`);
-        }
-    }, [shouldRedirect, pdfId, navigate]);
 
-    // const [selectedSpheres, setSelectedSpheres] = useState({
-    //     1: "",
-    //     2: "",
-    //     3: "",
-    //     4: "",
-    //     5: ""
-    // });
 
-    // const dropdownValues = [
-    //     "Образование",
-    //     "Услуги",
-    //     "Социальные науки",
-    //     "Гуманитарные науки",
-    //     "Здравоохранение",
-    //     "Искусство",
-    //     "Бизнес и управление",
-    //     "Национальная оборона и безопасность",
-    //     "Естественные науки, математика и статистика",
-    //     "Инженерия",
-    //     "Сельское хозяйство и биоресурсы",
-    //     "ИТ"
-    // ];
-
-    // const handleSphereChange = (key, value) => {
-    //     setSelectedSpheres(prev => ({ ...prev, [key]: value }));
-    // };
 
 
     const submitHandler = async (e) => {
@@ -85,6 +90,10 @@ const Info = () => {
             return;
         }
 
+        const englishProInput = Object.keys(proInput).reduce((prev, key) => {
+            const englishKey = RU_EN_MAPPING[key] || key;
+            return { ...prev, [englishKey]: proInput[key] };
+        }, {});
 
 
         setIsLoading(true);
@@ -92,11 +101,7 @@ const Info = () => {
 
         const formData = new FormData();
 
-        // Object.keys(selectedSpheres).forEach(key => {
-        //     formData.append(`Sphere_${key}`, selectedSpheres[key]);
-        // });
-
-        // Only append the photo if it's present
+        //Only append the photo if it's present
         if (photo) {
             formData.append('photo', photo);
         }
@@ -105,7 +110,7 @@ const Info = () => {
         formData.append('Grade', Grade);
         formData.append('Date_of_birth', Date_of_birth);
         formData.append('Google_drive', Google_drive);
-        // formData.append('selectedSpheres', JSON.stringify(selectedSpheres));
+        formData.append('proInput', JSON.stringify(englishProInput));
 
         const token = localStorage.getItem('access_token');
 
@@ -132,6 +137,11 @@ const Info = () => {
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const handleProChange = (e, field) => {
+        const value = e.target.value.replace(/\D/g, '');
+        setProInput(prev => ({ ...prev, [field]: value }));
     };
 
     const handlePhotoChange = (e) => {
@@ -232,33 +242,32 @@ const Info = () => {
                                     onChange={handleGoogledriveChange}
                                 />
                             </div>
-                            {/* <div className="mb-3">
-                                <label className="form-label">Желаемые сферы</label>
-                                {
-                                    [1, 2, 3, 4, 5].map(key => (
-                                        <div className="row align-items-center mb-2" key={key}>
-                                            <label className="col-sm-1 col-form-label text-start">{key}</label>
-                                            <div className="col-sm-11">
-                                                <select
-                                                    className='form-control'
-                                                    value={selectedSpheres[key] || ""}
-                                                    onChange={(e) => handleSphereChange(key, e.target.value)}
-                                                >
-                                                    <option value="">Выберите сферу</option>
-                                                    {
-                                                        dropdownValues
-                                                            .filter(value => !Object.values(selectedSpheres).includes(value) || value === selectedSpheres[key])
-                                                            .map(value => <option key={value} value={value}>{value}</option>)
-                                                    }
-                                                </select>
-                                            </div>
-                                        </div>
-                                    ))
-                                }
-                            </div> */}
 
-                            <div className="d-grid gap-2">
-                                <button type="submit" className='btn btn-success btn-block' disabled={isLoading}>
+                            <div className="mb-3">
+                                <strong>Оцените насколько вам подходят сферы</strong>
+                            </div>
+
+
+                            {
+                                proFields.map(field => (
+                                    <div className={["mb-3", "row", "custom-margin"].join(' ')} key={field}>
+                                        <label className="col-sm-9 col-form-label mit-label text-start">{field}</label>
+                                        <div className="col-sm-3">
+                                            <input
+                                                type="text"
+                                                className="form-control mit-input"
+                                                placeholder={`1-10`}
+                                                value={proInput[field]}
+                                                onChange={e => handleProChange(e, field)}
+                                            />
+                                        </div>
+                                    </div>
+                                ))
+                            }
+
+
+                            <div className="d-grid gap-2" >
+                                <button type="submit" className='btn btn-success btn-block' disabled={isLoading} style={{ marginTop: "1rem" }}>
                                     {isLoading ? 'Загрузка...' : 'Подтвердить'}
                                 </button>
                             </div>
@@ -266,8 +275,8 @@ const Info = () => {
                         {errorMessage && <p>{errorMessage}</p>}
                     </div>
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };
 

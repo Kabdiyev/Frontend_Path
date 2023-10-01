@@ -133,7 +133,7 @@ const Upload = () => {
                             </div>
                             {
                                 MIT_FIELDS.map(field => (
-                                    <div className="mb-3 row" key={field}>
+                                    <div className={["mb-3", "row", "custom-margin"].join(' ')} key={field}>
                                         <label className="col-sm-7 col-form-label mit-label text-start">{field}</label>
                                         <div className="col-sm-5">
                                             <input
