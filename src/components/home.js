@@ -57,7 +57,7 @@ const Home = () => {
 
         </div>
         <div className="col-12">
-          <h2 className="streamingtext text-center"><span className=''>Лучшая профориентационная IT платформа в Караганде!</span></h2>
+          <h2 className="streamingtext text-center"><span className=''>Лучшая профориентационная IT платформа в Казахстане!</span></h2>
         </div>
 
         <div className="col-12">
