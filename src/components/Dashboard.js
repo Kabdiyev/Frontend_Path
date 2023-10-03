@@ -20,7 +20,9 @@ const Dashboard = () => {
                 }
             });
             const validStudents = response.data.filter(student =>
-                student.Name.trim() !== '' && student.report1_url.trim() !== ''
+                student.Name.trim() !== '' &&
+                student.report1_url.trim() !== '' &&
+                student.show_acc === true
             );
             setStudents(validStudents);
 

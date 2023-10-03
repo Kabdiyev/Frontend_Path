@@ -25,6 +25,28 @@ const StudentInfo = () => {
         fetchData();
     }, [pdfId]);
 
+    const handleDelete = async () => {
+        const userConfirmation = window.confirm("Вы уверены, что хотите удалить аккаунт?"); // Show a confirmation dialog
+
+        if (userConfirmation) { // If user confirms deletion
+            const token = localStorage.getItem('access_token'); // Get token
+            try {
+                // Send DELETE request to API
+                await axios.patch(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/delete_from_dashboard`, null, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                // If successful, navigate to dashboard
+                navigate('/dashboard');
+            } catch (error) {
+                // Handle error (e.g., show an error message to user)
+                console.error("An error occurred while deleting:", error);
+                alert("Произошла ошибка при удалении. Пожалуйста, попробуйте еще раз.");
+            }
+        }
+    };
+
     return (
         <div className="container">
             <div className="row my-4">
@@ -79,6 +101,7 @@ const StudentInfo = () => {
                                 <a href={studentData.pdf_comment} download className="btn btn-primary btn-block">Загрузить Отчет 4</a>
                             }
                             <button type="button" className='btn btn-secondary' onClick={() => navigate(`/report1/${pdfId}`)}>Перейти к результатам</button>
+                            <button type="button" className='btn btn-danger' onClick={handleDelete}>удалить аккаунт</button>
                         </div>
                     </div>
                 </div>
