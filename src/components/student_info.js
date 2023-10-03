@@ -101,7 +101,7 @@ const StudentInfo = () => {
                                 <a href={studentData.pdf_comment} download className="btn btn-primary btn-block">Загрузить Отчет 4</a>
                             }
                             <button type="button" className='btn btn-secondary' onClick={() => navigate(`/report1/${pdfId}`)}>Перейти к результатам</button>
-                            <button type="button" className='btn btn-danger' onClick={handleDelete}>удалить аккаунт</button>
+                            <button type="button" className='btn btn-danger' onClick={handleDelete}>Удалить профиль</button>
                         </div>
                     </div>
                 </div>
