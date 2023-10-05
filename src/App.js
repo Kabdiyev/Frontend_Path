@@ -3,6 +3,7 @@ import { Link, Navigate, Route, BrowserRouter as Router, Routes, useLocation } f
 import Dashboard from './components/Dashboard.js';
 import './components/assets/styles/App.css';
 import Chatbot from './components/chatbot.js';
+import EditInfo from './components/edit_info.js';
 import Home from './components/home.js';
 import Info from './components/info.js';
 import Report1 from './components/report1.js';
@@ -165,6 +166,16 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <Info />
+                </ProtectedRoute>
+              }
+            />
+
+
+            <Route
+              path="/edit_info/:pdfId"
+              element={
+                <ProtectedRoute>
+                  <EditInfo />
                 </ProtectedRoute>
               }
             />

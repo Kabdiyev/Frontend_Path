@@ -10,6 +10,9 @@ const StudentInfo = () => {
     const navigate = useNavigate();
     const parsedMIT = studentData.MIT ? JSON.parse(studentData.MIT) : null;
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+    const parsedSelectedFields = studentData.Selected_fields ? JSON.parse(studentData.Selected_fields) : {};
+    const [isSelectedFieldsDropdownVisible, setIsSelectedFieldsDropdownVisible] = useState(false);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -62,13 +65,32 @@ const StudentInfo = () => {
                             <p>Имя: {studentData.Name}</p>
                             <p>Класс: {studentData.Grade}</p>
                             <p>Дата рождения: {studentData.Date_of_birth}</p>
+                            <p>Файлы: {studentData.Google_drive}</p>
                             <p>MBTI: {studentData.MBTI}</p>
+                            <div className="d-grid gap-2">
+                                <button type="button" className='btn btn-warning' onClick={() => navigate(`/edit_info/${pdfId}`)}>Изменить данные</button>
+                                <button type="button" className='btn btn-danger' onClick={handleDelete}>Удалить профиль</button>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div className="col-12 col-md-4">
                     <div className="card card-custom h-100 d-flex flex-column p-3 align-items-center">
                         <div className="d-grid gap-2">
+                            <button
+                                className="btn btn-secondary mt-2"
+                                onClick={() => setIsSelectedFieldsDropdownVisible(!isSelectedFieldsDropdownVisible)}
+                            >
+                                Посмотреть Сферы &nbsp;  {isSelectedFieldsDropdownVisible ? "▲" : "▼"}
+                            </button>
+
+                            {isSelectedFieldsDropdownVisible && parsedSelectedFields && (
+                                <div className="selected-fields-dropdown-content">
+                                    {Object.entries(parsedSelectedFields).map(([key, value]) => (
+                                        <p key={key}>{key}: {value}</p>
+                                    ))}
+                                </div>
+                            )}
                             <button className="btn btn-secondary" onClick={() => setIsDropdownVisible(!isDropdownVisible)}>
                                 Посмотреть MIT &nbsp;  {isDropdownVisible ? "▲" : "▼"}
                             </button>
@@ -82,6 +104,7 @@ const StudentInfo = () => {
                             {studentData.gallup_url &&
                                 <a href={studentData.gallup_url} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">Посмотреть Gallup</a>
                             }
+
                             {studentData.report1_url &&
                                 <a href={studentData.report1_url} download className="btn btn-primary btn-block">Загрузить Отчет 1</a>
                             }
@@ -101,7 +124,6 @@ const StudentInfo = () => {
                                 <a href={studentData.pdf_comment} download className="btn btn-primary btn-block">Загрузить Отчет 4</a>
                             }
                             <button type="button" className='btn btn-success' onClick={() => navigate(`/report1/${pdfId}`)}>Перейти к результатам</button>
-                            <button type="button" className='btn btn-danger' onClick={handleDelete}>Удалить профиль</button>
                         </div>
                     </div>
                 </div>

@@ -12,11 +12,11 @@ const Results_new = () => {
     const [filteredData, setFilteredData] = useState(null);
     const [filterTerms, setFilterTerms] = useState([]);
     const [range, setRange] = useState({ min: 0, max: 100 });
+    const token = localStorage.getItem('access_token');
 
     useEffect(() => {
         const fetchTableData = async () => {
             setIsLoading(true);
-            const token = localStorage.getItem('access_token');
             try {
                 const response = await axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/pdf_similarity_new`, {
                     headers: {
@@ -33,10 +33,9 @@ const Results_new = () => {
         };
 
         fetchTableData();
-    }, [pdfId]);
+    }, [pdfId, token]);
 
     const handleOpenPDF = () => {
-        const token = localStorage.getItem('access_token');
 
         axios
             .get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/pdf_similarities_download_new`, {
@@ -50,6 +49,25 @@ const Results_new = () => {
             .catch((error) => {
                 console.error(error);
             });
+    };
+
+    const onRegenerateResultsClick = async () => {
+        setIsLoading(true);  // Show the loader while regenerating
+
+        try {
+            const response = await axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/pdf_similarity_new?regenerate=true`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            const data = response.data;
+            setTableData(data);
+            setIsLoading(false);
+        } catch (error) {
+            console.error('Error regenerating results:', error);
+            setIsLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -141,7 +159,7 @@ const Results_new = () => {
                                 <Link to={`/results/${pdfId}`}>
                                     <button className='btn btn-info mx-2'>Back</button>
                                 </Link>
-
+                                <button onClick={onRegenerateResultsClick} className='btn btn-danger mx-2'>Regenerate</button>
                                 <button onClick={handleOpenPDF} className='btn btn-success mx-2'>
                                     Download
                                 </button>

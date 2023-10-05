@@ -17,12 +17,12 @@ const Results = () => {
     const [range, setRange] = useState({ min: 0, max: 100 });
     const [selectedDomain, setSelectedDomain] = useState('');
     const [domains, setDomains] = useState([]);
+    const token = localStorage.getItem('access_token');
 
 
     useEffect(() => {
         const fetchTableData = async () => {
             setIsLoading(true);
-            const token = localStorage.getItem('access_token');
             try {
                 const response = await axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/pdf_similarity`, {
                     headers: {
@@ -39,23 +39,39 @@ const Results = () => {
         };
 
         fetchTableData();
-    }, [pdfId]);
+    }, [pdfId, token]);
 
     const handleOpenPDF = () => {
-        const token = localStorage.getItem('access_token');
-
-        axios
-            .get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/pdf_similarities_download`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
+        axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/pdf_similarities_download`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
             .then((response) => {
                 window.open(response.data, '_blank');
             })
             .catch((error) => {
                 console.error(error);
             });
+    };
+
+    const onRegenerateResultsClick = async () => {
+        setIsLoading(true);  // Show the loader while regenerating
+
+        try {
+            const response = await axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/pdf_similarity?regenerate=true`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            const data = response.data;
+            setTableData(data);
+            setIsLoading(false);
+        } catch (error) {
+            console.error('Error regenerating results:', error);
+            setIsLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -179,6 +195,7 @@ const Results = () => {
                                 <Link to={`/report3/${pdfId}`}>
                                     <button className='btn btn-info mx-2'>Back</button>
                                 </Link>
+                                <button onClick={onRegenerateResultsClick} className='btn btn-danger mx-2'>Regenerate</button>
 
                                 <button onClick={handleOpenPDF} className='btn btn-success mx-2'>
                                     Download
