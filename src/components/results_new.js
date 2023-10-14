@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import { BeatLoader } from "react-spinners";
 import "./assets/styles/Results_new.css";
 
-const Results_new = () => {
+const Resultsnew = () => {
     const { pdfId } = useParams();
     const [isLoading, setIsLoading] = useState(false);
     const [tableData, setTableData] = useState(null);
@@ -263,4 +263,4 @@ const Results_new = () => {
 
 
 
-export default Results_new;
+export default Resultsnew;

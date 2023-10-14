@@ -9,7 +9,9 @@ const Dashboard = () => {
     const [grades, setGrades] = useState([]);
     const [selectedSchool, setSelectedSchool] = useState('Все школы');
     const [selectedGrade, setSelectedGrade] = useState('Все классы');
+    const [hasBusinessAccount, setHasBusinessAccount] = useState(false);
     const navigate = useNavigate();
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,6 +24,7 @@ const Dashboard = () => {
             const validStudents = response.data.filter(student =>
                 student.Name.trim() !== '' &&
                 student.report1_url.trim() !== '' &&
+                student.Business === false &&
                 student.show_acc === true
             );
             setStudents(validStudents);
@@ -36,6 +39,25 @@ const Dashboard = () => {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        const checkBusinessAccount = async () => {
+            const token = localStorage.getItem('access_token');
+            try {
+                const response = await axios.get('https://fastapi-production-fffa.up.railway.app/auth/users/me', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setHasBusinessAccount(response.data.business);
+            } catch (error) {
+                console.error("Error checking business account status:", error);
+            }
+        };
+
+        checkBusinessAccount();
+    }, []);
+
+
     const filteredStudents = students.filter(student => {
         let matchesSchool = selectedSchool === 'Все школы' || student.School === selectedSchool;
         let matchesGrade = selectedGrade === 'Все классы' || student.Grade === selectedGrade;
@@ -48,6 +70,12 @@ const Dashboard = () => {
                 <div className="card card-custom h-100 m-2 p-3">
                     <h3 className='mb-3'>Dashboard</h3>
                     <button type="button" className='btn btn-primary' onClick={() => navigate('/info')}>Добавить ученика</button>
+                    {hasBusinessAccount && (
+                        <>
+                            <button type="button" className='btn btn-primary mt-2' onClick={() => navigate('/business_info')}>Добавить разбор</button>
+                            <button type="button" className='btn btn-primary mt-2' onClick={() => navigate('/business_clients')}>Посмотреть клиентов</button>
+                        </>
+                    )}
                 </div>
             </div>
             <div className="col-12 col-md-4">
@@ -77,4 +105,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default Dashboard; 

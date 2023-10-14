@@ -1,0 +1,26 @@
+.client-list {
+    margin-top: 5px;
+}
+
+.client-name {
+    padding: 10px;
+    margin-bottom: 2px;
+    border-radius: 3px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.client-name:hover {
+    background-color: #f0f0f0;
+}
+
+.blue-frame {
+    border: 2px solid #007bff;
+    /* Blue border */
+}
+
+.green-frame {
+    border: 2px solid #28a745;
+    /* Green border */
+}

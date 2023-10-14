@@ -2,6 +2,12 @@ import React from 'react';
 import { Link, Navigate, Route, BrowserRouter as Router, Routes, useLocation } from 'react-router-dom';
 import Dashboard from './components/Dashboard.js';
 import './components/assets/styles/App.css';
+import BusinessClient from './components/business_clients.js';
+import BusinessInfo from './components/business_info.js';
+import BusinessReport1 from './components/business_report1.js';
+import BusinessReport2 from './components/business_report2.js';
+import BusinessReport3 from './components/business_report3.js';
+import BusinessUpload from './components/business_upload.js';
 import Chatbot from './components/chatbot.js';
 import EditInfo from './components/edit_info.js';
 import Home from './components/home.js';
@@ -10,7 +16,7 @@ import Report1 from './components/report1.js';
 import Report2 from './components/report2.js';
 import Report3 from './components/report3.js';
 import Results from './components/results.js';
-import Results_new from './components/results_new.js';
+import Resultsnew from './components/results_new.js';
 import ResultsPdf from './components/results_pdf';
 import StudentInfo from './components/student_info.js';
 import Upload from './components/upload.js';
@@ -125,7 +131,7 @@ const App = () => {
               path="/results_new/:pdfId"
               element={
                 <ProtectedRoute>
-                  <Results_new />
+                  <Resultsnew />
                 </ProtectedRoute>
               }
             />
@@ -170,6 +176,56 @@ const App = () => {
               }
             />
 
+            <Route
+              path="/business_info"
+              element={
+                <ProtectedRoute>
+                  <BusinessInfo />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/business_clients"
+              element={
+                <ProtectedRoute>
+                  <BusinessClient />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/upload_business/:pdfId"
+              element={
+                <ProtectedRoute>
+                  <BusinessUpload />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/Business_Report1/:pdfId"
+              element={
+                <ProtectedRoute>
+                  <BusinessReport1 />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/Business_Report2/:pdfId"
+              element={
+                <ProtectedRoute>
+                  <BusinessReport2 />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/Business_Report3/:pdfId"
+              element={
+                <ProtectedRoute>
+                  <BusinessReport3 />
+                </ProtectedRoute>
+              }
+            />
 
             <Route
               path="/edit_info/:pdfId"
