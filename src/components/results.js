@@ -17,7 +17,102 @@ const Results = () => {
     const [range, setRange] = useState({ min: 0, max: 100 });
     const [selectedDomain, setSelectedDomain] = useState('');
     const [domains, setDomains] = useState([]);
+    const [showPopup, setShowPopup] = useState(false);
+    const [Prof_fields, setProf_fields] = useState([]);
+
     const token = localStorage.getItem('access_token');
+
+    const fetchPdfData = async () => {
+        try {
+            const response = await axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/by_id`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.data && response.data.Prof_fields) {
+                window.location.href = `/report4/${pdfId}`;
+            } else {
+                setShowPopup(true);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const fields = [
+        "ИТ",
+        "Естественные науки, математика и статистика",
+        "Инженерия",
+        "Гуманитарные науки",
+        "Искусство",
+        "Образование",
+        "Здравоохранение",
+        "Сельское хозяйство и биоресурсы",
+        "Социальные науки",
+        "Национальная оборона и безопасность",
+        "Бизнес и управление",
+        "Услуги"
+    ];
+
+    const handleFieldToggle = (field) => {
+        const updatedFields = [...Prof_fields];
+        const index = updatedFields.indexOf(field);
+        if (index > -1) {
+            updatedFields.splice(index, 1);
+        } else {
+            if (updatedFields.length < 4) {
+                updatedFields.push(field);
+            }
+        }
+        setProf_fields(updatedFields);
+    };
+
+    const handleSubmitFields = async () => {
+        if (Prof_fields.length < 1) {
+            alert('Please select at least one field.');
+            return;
+        }
+        try {
+            const response = await axios.post(
+                `https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/choose_prof_fields`,
+                Prof_fields,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            if (response.status === 200) {
+                setShowPopup(false);
+            }
+        } catch (error) {
+            console.error('Error submitting fields:', error);
+        }
+    };
+
+    const handleNextClick = () => {
+        fetchPdfData();
+    };
+
+    const handleFieldsClick = async () => {
+        if (Prof_fields.length === 0) { // Check if Prof_fields are empty
+            try {
+                const response = await axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/by_id`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (response.data && response.data.Prof_fields) {
+                    setProf_fields(response.data.Prof_fields); // Set the Prof_fields from the response
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        setShowPopup(true); // Show the popup regardless
+    };
 
 
     useEffect(() => {
@@ -41,19 +136,19 @@ const Results = () => {
         fetchTableData();
     }, [pdfId, token]);
 
-    const handleOpenPDF = () => {
-        axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/pdf_similarities_download`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-            .then((response) => {
-                window.open(response.data, '_blank');
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    };
+    // const handleOpenPDF = () => {
+    //     axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/pdf_similarities_download`, {
+    //         headers: {
+    //             Authorization: `Bearer ${token}`,
+    //         },
+    //     })
+    //         .then((response) => {
+    //             window.open(response.data, '_blank');
+    //         })
+    //         .catch((error) => {
+    //             console.error(error);
+    //         });
+    // };
 
     const onRegenerateResultsClick = async () => {
         setIsLoading(true);  // Show the loader while regenerating
@@ -75,13 +170,6 @@ const Results = () => {
     };
 
     useEffect(() => {
-        if (tableData && tableData.length > 0) {
-            const uniqueDomains = [...new Set(tableData.map(item => item.Domains))];
-            setDomains(uniqueDomains);
-        }
-    }, [tableData]);
-
-    useEffect(() => {
         let filtered = tableData;
 
         // If domain is selected, filter by domain
@@ -101,9 +189,6 @@ const Results = () => {
         if (tableData && tableData.length > 0) {
             const uniqueDomains = [...new Set(tableData.map(item => item.Domains))];
             setDomains(uniqueDomains);
-            if (uniqueDomains.length > 0) {
-                setSelectedDomain(uniqueDomains[0]); // Set the first domain as the selected
-            }
         }
     }, [tableData]);
 
@@ -163,7 +248,7 @@ const Results = () => {
     const chartData = calculateChartData();
 
     return (
-        <div className="row">
+        <div className="row m-0 p-0">
             {isLoading ? (
                 <div className="col-12 row pb-3">
                     <div className="card card-custom h-100 p-3 d-flex flex-column align-items-center">
@@ -197,17 +282,52 @@ const Results = () => {
                                 </Link>
                                 <button onClick={onRegenerateResultsClick} className='btn btn-danger mx-2'>Regenerate</button>
 
-                                <button onClick={handleOpenPDF} className='btn btn-success mx-2'>
-                                    Download
+                                <button onClick={handleFieldsClick} className='btn btn-warning mx-2'>
+                                    Select Fields
                                 </button>
-                                <Link to={`/results_new/${pdfId}`}>
+                                <Link to="#" onClick={handleNextClick}>
                                     <button className='btn btn-primary me-2'>Next</button>
                                 </Link>
 
                             </div>
                         </div>
                     </div>
-                    <div className="col-12 row pb-3">
+                    {showPopup && (
+                        <div className="modal d-block custom-border" tabIndex="-1" role="dialog">
+                            <div className="modal-dialog">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title">Выберите область</h5>
+                                        <button type="button" className="close" onClick={() => setShowPopup(false)}>
+                                            <span>&times;</span>
+                                        </button>
+                                    </div>
+                                    <div className="modal-body">
+                                        {fields.map((field) => (
+                                            <div className="form-check" key={field}>
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    value={field}
+                                                    id={`field-${field}`}
+                                                    checked={Prof_fields.includes(field)}
+                                                    onChange={() => handleFieldToggle(field)}
+                                                />
+                                                <label className="form-check-label" htmlFor={`field-${field}`}>
+                                                    {field}
+                                                </label>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-secondary" onClick={() => setShowPopup(false)}>Отмена</button>
+                                        <button type="button" className="btn btn-primary" onClick={handleSubmitFields}>Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    <div className="col-12 row pb-3 m-0 px-0 pt-0">
                         <div className="col-12 col-md-6 bg-grey row justify-content-start align-items-start">
                             <div className="col-12">
                                 <div className="card card-custom p-3">

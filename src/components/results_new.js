@@ -156,7 +156,7 @@ const Resultsnew = () => {
                         <div className="card card-custom h-100 p-3">
                             <h1>Атлас Новых Профессий и Компетенций</h1>
                             <div className="col-12 mt-3">
-                                <Link to={`/results/${pdfId}`}>
+                                <Link to={`/report4/${pdfId}`}>
                                     <button className='btn btn-info mx-2'>Back</button>
                                 </Link>
                                 <button onClick={onRegenerateResultsClick} className='btn btn-danger mx-2'>Regenerate</button>

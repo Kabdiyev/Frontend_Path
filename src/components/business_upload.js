@@ -41,10 +41,11 @@ const BusinessUpload = () => {
     const submitHandler = (e, redirectToResults = false) => {
         e.preventDefault();
 
-        if (!file || !mbti) {
-            setErrorMessage('Please select a file and enter your MBTI results');
+        if (!file || !mbti || Object.values(mitInput).some(val => val === '')) {
+            setErrorMessage('Please select a file and enter your MBTI and MIT results');
             return;
         }
+
 
         setIsLoading(true);
         setErrorMessage('');

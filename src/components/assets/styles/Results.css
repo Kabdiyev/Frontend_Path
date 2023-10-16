@@ -179,3 +179,8 @@
     max-height: 800px;
     overflow-y: auto;
 }
+
+.custom-border .modal-content {
+    border: 2px solid rgb(25, 121, 185);
+    /* or any color you prefer */
+}

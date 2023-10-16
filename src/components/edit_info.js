@@ -13,6 +13,7 @@ const EditInfo = () => {
     const parsedSelectedFields = formData.Selected_fields ? JSON.parse(formData.Selected_fields) : null;
     const [isSelectedFieldsDropdownVisible, setIsSelectedFieldsDropdownVisible] = useState(false);
 
+
     const predefinedSelectedFields = {
         "Бизнес и управление": "",
         "Здравоохранение": "",

@@ -97,7 +97,7 @@ const ResultsPdf = () => {
                         <div className="card card-custom h-100 p-3 d-flex flex-column align-items-center">
                             <h1>Unlock Your Potential with Personalized Insights</h1>
                             <ul className="content-list">
-                                <li><strong>REPORT 1: YOUR PERSONALITY</strong> - Pesronality analysis based on CliftonStrengths, MBTI, and Multiple Intelligences </li>
+                                <li><strong>REPORT 1: YOUR PERSONALITY</strong> - Personality analysis based on CliftonStrengths, MBTI, and Multiple Intelligences </li>
                                 <li><strong>REPORT 2: BEST CAREER FIELDS</strong> - Explore top career paths aligned with your unique strengths and interests </li>
                                 <li><strong>REPORT 3: TOP 5 PROFESSIONS</strong> - Analyze your chosen professions to understand their fit with your strengths </li>
                             </ul>

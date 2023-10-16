@@ -121,7 +121,7 @@ const StudentInfo = () => {
                                 <a href={studentData.pdf_similarities_new} download className="btn btn-primary btn-block">Загрузить Профессии 2</a>
                             }
                             {studentData.pdf_comment &&
-                                <a href={studentData.pdf_comment} download className="btn btn-primary btn-block">Загрузить Отчет 4</a>
+                                <a href={studentData.report4_url} download className="btn btn-primary btn-block">Загрузить Отчет 4</a>
                             }
                             <button type="button" className='btn btn-success' onClick={() => navigate(`/report1/${pdfId}`)}>Перейти к результатам</button>
                         </div>
