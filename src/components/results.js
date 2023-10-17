@@ -22,6 +22,7 @@ const Results = () => {
 
     const token = localStorage.getItem('access_token');
 
+
     const fetchPdfData = async () => {
         try {
             const response = await axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/by_id`, {
