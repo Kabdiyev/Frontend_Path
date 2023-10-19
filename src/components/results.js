@@ -137,19 +137,19 @@ const Results = () => {
         fetchTableData();
     }, [pdfId, token]);
 
-    // const handleOpenPDF = () => {
-    //     axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/pdf_similarities_download`, {
-    //         headers: {
-    //             Authorization: `Bearer ${token}`,
-    //         },
-    //     })
-    //         .then((response) => {
-    //             window.open(response.data, '_blank');
-    //         })
-    //         .catch((error) => {
-    //             console.error(error);
-    //         });
-    // };
+    const handleOpenPDF = () => {
+        axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/pdf_similarities_download`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((response) => {
+                window.open(response.data, '_blank');
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
 
     const onRegenerateResultsClick = async () => {
         setIsLoading(true);  // Show the loader while regenerating
@@ -282,7 +282,9 @@ const Results = () => {
                                     <button className='btn btn-info mx-2'>Back</button>
                                 </Link>
                                 <button onClick={onRegenerateResultsClick} className='btn btn-danger mx-2'>Regenerate</button>
-
+                                <button onClick={handleOpenPDF} className='btn btn-success mx-2'>
+                                    Download
+                                </button>
                                 <button onClick={handleFieldsClick} className='btn btn-warning mx-2'>
                                     Select Fields
                                 </button>
