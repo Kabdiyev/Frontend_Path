@@ -156,14 +156,14 @@ const Resultsnew = () => {
                         <div className="card card-custom h-100 p-3">
                             <h1>Атлас Новых Профессий и Компетенций</h1>
                             <div className="col-12 mt-3">
-                                <Link to={`/report4/${pdfId}`}>
+                                <Link to={`/report3/${pdfId}`}>
                                     <button className='btn btn-info mx-2'>Back</button>
                                 </Link>
                                 <button onClick={onRegenerateResultsClick} className='btn btn-danger mx-2'>Regenerate</button>
                                 <button onClick={handleOpenPDF} className='btn btn-success mx-2'>
                                     Download
                                 </button>
-                                <Link to={`/results_pdf/${pdfId}`}>
+                                <Link to={`/results/${pdfId}`}>
                                     <button className='btn btn-primary me-2'>Next</button>
                                 </Link>
 

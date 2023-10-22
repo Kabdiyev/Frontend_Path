@@ -278,7 +278,7 @@ const Results = () => {
                                 <option value=''>Все Домены</option>
                             </select>
                             <div className="col-12 mt-3">
-                                <Link to={`/report3/${pdfId}`}>
+                                <Link to={`/results_new/${pdfId}`}>
                                     <button className='btn btn-info mx-2'>Back</button>
                                 </Link>
                                 <button onClick={onRegenerateResultsClick} className='btn btn-danger mx-2'>Regenerate</button>

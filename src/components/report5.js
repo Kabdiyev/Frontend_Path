@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { BeatLoader } from "react-spinners";
 import "./assets/styles/Report1.css";
 
-const Report3 = () => {
+const Report5 = () => {
     const { pdfId } = useParams();
     const [isLoading, setIsLoading] = useState(true);
     const [pdfLoaded, setPdfLoaded] = useState(false);
@@ -12,7 +12,7 @@ const Report3 = () => {
     const token = localStorage.getItem('access_token');
 
     useEffect(() => {
-        axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/report3`, {
+        axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/report5`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -30,7 +30,7 @@ const Report3 = () => {
 
     const onRegenerateClick = () => {
         setIsLoading(true);  // Show the loader while regenerating
-        axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/report3?regenerate=true`, {
+        axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/report5?regenerate=true`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -49,11 +49,11 @@ const Report3 = () => {
         <div className="report1-container">
             {isLoading ? (
                 <div className="card card-custom h-100 p-3 d-flex flex-column align-items-center">
-                    <h1>Неочевидные Слабости Талантов</h1>
+                    <h1>Потенциальные Карьерные Пути</h1>
                     <ul className="content-list">
-                        <li><strong>ДОМЕНЫ ЗАМЕДЛЯЮЩИЕ ПРОГРЕСС:</strong> - Ознакомьтесь с неочевидными слабостями и подводными камнями</li>
-                        <li><strong>ПЕРСОНАЛЬНЫЕ СТРАТЕГИИ:</strong> -  Получите советы и стратегии для обхода слабостей и раскрытия потенциала</li>
-                        <li><strong>ВЗАИМОДЕЙСТВИЕ С ОКРУЖАЮЩИМИ:</strong> - Влияние талантов на ваши отношения и взаимодействие с окружающими</li>
+                        <li><strong>ОТЧЕТ 1: ЛУЧШИЕ КАРЬЕРНЫЕ НАПРАВЛЕНИЯ</strong> - Исследуйте лучшие карьерные пути, соответствующие вашим уникальным сильным сторонам и интересам</li>
+                        <li><strong>ОТЧЕТ 2: ТОП-5 ПРОФЕССИЙ</strong> - Проанализируйте подходящие профессии, чтобы понять, насколько они соответствуют вашим сильным сторонам </li>
+                        <li><strong>ОТЧЕТ 3: ХАРАКТЕРИСТИКА ВАШЕЙ ЛИЧНОСТИ</strong> - Характеристика вашей личности на основе CliftonStrengths, MBTI и множественных интеллектов</li>
                     </ul>
                     <div className="loader">
                         <BeatLoader color="#4A90E2" />
@@ -82,11 +82,11 @@ const Report3 = () => {
                 </div>
             )}
             <div className="buttons-container" >
-                <Link to={`/results_new/${pdfId}`}>
-                    <button className='btn btn-primary me-2' style={{ marginTop: '10px' }}>Next</button>
+                <Link to={`/report4/${pdfId}`}>
+                    <button className='btn btn-primary me-2' style={{ marginTop: '10px' }}>Back</button>
                 </Link>
-                <Link to={`/report2/${pdfId}`}>
-                    <button className='btn btn-info mx-2' style={{ marginTop: '10px' }}>Back</button>
+                <Link to={`/dashboard`}>
+                    <button className='btn btn-info mx-2' style={{ marginTop: '10px' }}>Finish</button>
                 </Link>
             </div>
             <div className="buttons-container-left" >
@@ -97,4 +97,4 @@ const Report3 = () => {
     );
 };
 
-export default Report3;
+export default Report5;

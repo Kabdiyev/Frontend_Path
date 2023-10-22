@@ -16,6 +16,7 @@ import Report1 from './components/report1.js';
 import Report2 from './components/report2.js';
 import Report3 from './components/report3.js';
 import Report4 from './components/report4.js';
+import Report5 from './components/report5.js';
 import Results from './components/results.js';
 import Resultsnew from './components/results_new.js';
 import ResultsPdf from './components/results_pdf';
@@ -125,6 +126,14 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <Report4 />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/report5/:pdfId"
+              element={
+                <ProtectedRoute>
+                  <Report5 />
                 </ProtectedRoute>
               }
             />

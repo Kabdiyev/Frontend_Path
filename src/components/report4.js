@@ -88,7 +88,7 @@ const Report4 = () => {
                 </div>
             )}
             <div className="buttons-container" >
-                <Link to={`/results_new/${pdfId}`}>
+                <Link to={`/report5/${pdfId}`}>
                     <button className='btn btn-primary me-2' style={{ marginTop: '10px' }}>Next</button>
                 </Link>
                 <Link to={`/results/${pdfId}`}>

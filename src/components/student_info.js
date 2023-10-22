@@ -120,8 +120,11 @@ const StudentInfo = () => {
                             {studentData.pdf_similarities_new &&
                                 <a href={studentData.pdf_similarities_new} download className="btn btn-primary btn-block">Загрузить Профессии 2</a>
                             }
-                            {studentData.pdf_comment &&
+                            {studentData.report4_url &&
                                 <a href={studentData.report4_url} download className="btn btn-primary btn-block">Загрузить Отчет 4</a>
+                            }
+                            {studentData.report5_url &&
+                                <a href={studentData.report5_url} download className="btn btn-primary btn-block">Загрузить Отчет 5</a>
                             }
                             <button type="button" className='btn btn-success' onClick={() => navigate(`/report1/${pdfId}`)}>Перейти к результатам</button>
                         </div>
