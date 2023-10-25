@@ -82,7 +82,7 @@ const BusinessReport3 = () => {
                 </div>
             )}
             <div className="buttons-container" >
-                <Link to={`/results/${pdfId}`}>
+                <Link to={`/results_new/${pdfId}`}>
                     <button className='btn btn-primary me-2' style={{ marginTop: '10px' }}>Next</button>
                 </Link>
                 <Link to={`/Business_Report2/${pdfId}`}>
