@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { BeatLoader } from "react-spinners";
 import "./assets/styles/Results_new.css";
 
@@ -13,6 +13,9 @@ const Resultsnew = () => {
     const [filterTerms, setFilterTerms] = useState([]);
     const [range, setRange] = useState({ min: 0, max: 100 });
     const token = localStorage.getItem('access_token');
+    const [data, setData] = useState(null);
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         const fetchTableData = async () => {
@@ -34,6 +37,7 @@ const Resultsnew = () => {
 
         fetchTableData();
     }, [pdfId, token]);
+
 
     const handleOpenPDF = () => {
 
@@ -134,6 +138,33 @@ const Resultsnew = () => {
 
     const chartData = calculateChartData();
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const token = localStorage.getItem('access_token');
+                const responses = await axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/by_id`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setData(responses.data); // store the data in state
+            } catch (error) {
+                console.error("Error fetching data", error);
+                // Handle error accordingly
+            }
+        };
+        fetchData();  // Calling the function to fetch data
+    }, [pdfId]);
+
+
+    const handleClick = () => {
+        if (data && data.Business === true) {
+            navigate(`/Business_Report3/${pdfId}`);
+        } else {
+            navigate(`/report3/${pdfId}`);
+        }
+    };
+
     return (
         <div className="row">
             {isLoading ? (
@@ -156,9 +187,7 @@ const Resultsnew = () => {
                         <div className="card card-custom h-100 p-3">
                             <h1>Атлас Новых Профессий и Компетенций</h1>
                             <div className="col-12 mt-3">
-                                <Link to={`/report3/${pdfId}`}>
-                                    <button className='btn btn-info mx-2'>Back</button>
-                                </Link>
+                                <button onClick={handleClick} className='btn btn-info mx-2'>Back</button>
                                 <button onClick={onRegenerateResultsClick} className='btn btn-danger mx-2'>Regenerate</button>
                                 <button onClick={handleOpenPDF} className='btn btn-success mx-2'>
                                     Download

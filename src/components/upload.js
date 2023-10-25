@@ -30,13 +30,14 @@ const RU_EN_MAPPING = {
 const Upload = () => {
     const { pdfId } = useParams();
     const [file, setFile] = useState(null);
-    const [mbti, setMbti] = useState('');
+    const [mbti, setMbti] = useState({ first: '', second: '' });
     const [mitInput, setMitInput] = useState(
         MIT_FIELDS.reduce((prev, field) => ({ ...prev, [field]: '' }), {})
     );
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [shouldRedirect, setShouldRedirect] = useState(false);
+    const finalMbti = `${mbti.first}${mbti.second}`;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -48,7 +49,7 @@ const Upload = () => {
     const submitHandler = (e) => {
         e.preventDefault();
 
-        if (!file || !mbti || Object.values(mitInput).some(val => val === '')) {
+        if (!file || !finalMbti || mbti.first === '' || mbti.second === '' || Object.values(mitInput).some(val => val === '')) {
             setErrorMessage('Please select a file and enter your MBTI and MIT results');
             return;
         }
@@ -64,7 +65,7 @@ const Upload = () => {
         const formData = new FormData();
         formData.append('pdf_id', pdfId);
         formData.append('file', file);
-        formData.append('MBTI', mbti);
+        formData.append('MBTI', finalMbti);
         formData.append('MIT', JSON.stringify(englishMitInput));
 
         const token = localStorage.getItem('access_token');
@@ -91,10 +92,6 @@ const Upload = () => {
         setFile(e.target.files[0]);
     };
 
-    const handleMbtiChange = (e) => {
-        setMbti(e.target.value);
-        setErrorMessage('');
-    };
 
     const handleMitChange = (e, field) => {
         const value = e.target.value.replace(/\D/g, ''); // Replace non-digit characters with empty string
@@ -118,15 +115,35 @@ const Upload = () => {
                             <div className="mb-3">
                                 <a href="https://www.16personalities.com/free-personality-test" for="formFile" class="form-label" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'none' }} ><strong>Результаты индикатора Майерс-Бриггс</strong></a>
                             </div>
-                            <div>
-                                <input
-                                    className='form-control'
-                                    type="text"
-                                    placeholder="Ex. INTJ-A"
-                                    value={mbti}
-                                    onChange={handleMbtiChange}
-                                    style={{ marginBottom: '10px' }}
-                                />
+                            <div className="row justify-content-center" style={{ marginBottom: '10px' }}>
+                                <div className="col-4 mx-1">
+                                    <select
+                                        style={{ textAlign: 'center' }}
+                                        className="form-select"
+                                        value={mbti.first}
+                                        onChange={e => setMbti(prev => ({ ...prev, first: e.target.value }))}
+                                    >
+                                        <option value="" disabled>Select</option>
+                                        <option value="IN">IN</option>
+                                        <option value="IS">IS</option>
+                                        <option value="EN">EN</option>
+                                        <option value="ES">ES</option>
+                                    </select>
+                                </div>
+                                <div className="col-4 mx-1">
+                                    <select
+                                        style={{ textAlign: 'center' }}
+                                        className="form-select"
+                                        value={mbti.second}
+                                        onChange={e => setMbti(prev => ({ ...prev, second: e.target.value }))}
+                                    >
+                                        <option value="" disabled>Select</option>
+                                        <option value="TJ">TJ</option>
+                                        <option value="TP">TP</option>
+                                        <option value="FJ">FJ</option>
+                                        <option value="FP">FP</option>
+                                    </select>
+                                </div>
                             </div>
                             <div className="mb-3">
                                 <a href="https://www.idrlabs.com/multiple-intelligences/test.php" target="_blank" for="formFile" class="form-label" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}> <strong>Результаты теста на тип интеллекта</strong></a>
@@ -156,8 +173,8 @@ const Upload = () => {
                         {errorMessage && <p>{errorMessage}</p>}
                     </div >
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
 
     );
 

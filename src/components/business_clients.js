@@ -33,7 +33,7 @@ const BusinessClient = () => {
         if (client.report1_url && client.report1_url.trim() !== '') {
             navigate(`/Business_Report1/${client._id}`);
         } else {
-            navigate(`/results/${client._id}`);
+            navigate(`/results_new/${client._id}`);
         }
     };
 
