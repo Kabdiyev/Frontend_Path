@@ -53,7 +53,7 @@ const Report2 = () => {
                 <div className="card card-custom h-100 p-3 d-flex flex-column align-items-center">
                     <h1>Синергия Ваших Талантов</h1>
                     <ul className="content-list">
-                        <li><strong>ДОМЕНЫ ВЕДУЩИЕ К УСПЕХУ:</strong> - Разкройте свои ведущие домены CliftonStrength34</li>
+                        <li><strong>ДОМЕНЫ ВЕДУЩИЕ К УСПЕХУ:</strong> - Раскройте свои ведущие домены CliftonStrength34</li>
                         <li><strong>ТАЛАНТЫ УСПЕХА:</strong> - Используйте свои таланты для достижения успеха в учебе и карьере</li>
                         <li><strong>ПОСТРОЕНИЕ ОТНОШЕНИЙ:</strong> - Укрепляйте свои социальные связи и создавайте гармоничные отношения</li>
                     </ul>
