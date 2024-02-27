@@ -17,7 +17,7 @@ const BusinessReport3 = () => {
                 Authorization: `Bearer ${token}`,
             },
             params: {
-                num_report: 2, // Directly sending integer 1 for num_report
+                num_report: 3, // Directly sending integer 1 for num_report
             },
         })
             .then((response) => {
@@ -38,7 +38,7 @@ const BusinessReport3 = () => {
                 Authorization: `Bearer ${token}`,
             },
             params: {
-                num_report: 2, // Directly sending integer 1 for num_report
+                num_report: 3, // Directly sending integer 1 for num_report
             },
         })
             .then((response) => {
