@@ -13,9 +13,12 @@ const Report1 = () => {
 
 
     useEffect(() => {
-        axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/report1`, {
+        axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/school_reports`, {
             headers: {
                 Authorization: `Bearer ${token}`,
+            },
+            params: {
+                num_report: 1, // Directly sending integer 1 for num_report
             },
         })
             .then((response) => {
@@ -31,9 +34,12 @@ const Report1 = () => {
 
     const onRegenerateClick = () => {
         setIsLoading(true);  // Show the loader while regenerating
-        axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/report1?regenerate=true`, {
+        axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/school_reports?regenerate=true`, {
             headers: {
                 Authorization: `Bearer ${token}`,
+            },
+            params: {
+                num_report: 1, // Again, directly sending integer 1 for num_report
             },
         })
             .then((response) => {

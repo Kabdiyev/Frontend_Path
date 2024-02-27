@@ -12,9 +12,12 @@ const BusinessReport3 = () => {
     const token = localStorage.getItem('access_token');
 
     useEffect(() => {
-        axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/business_report3`, {
+        axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/business_reports`, {
             headers: {
                 Authorization: `Bearer ${token}`,
+            },
+            params: {
+                num_report: 2, // Directly sending integer 1 for num_report
             },
         })
             .then((response) => {
@@ -30,9 +33,12 @@ const BusinessReport3 = () => {
 
     const onRegenerateClick = () => {
         setIsLoading(true);  // Show the loader while regenerating
-        axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/business_report3?regenerate=true`, {
+        axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/business_reports?regenerate=true`, {
             headers: {
                 Authorization: `Bearer ${token}`,
+            },
+            params: {
+                num_report: 2, // Directly sending integer 1 for num_report
             },
         })
             .then((response) => {
