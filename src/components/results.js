@@ -19,7 +19,7 @@ const Results = () => {
     const [domains, setDomains] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
     const [Prof_fields, setProf_fields] = useState([]);
-
+    const [searchTerm, setSearchTerm] = useState('');
     const token = localStorage.getItem('access_token');
 
 
@@ -136,6 +136,20 @@ const Results = () => {
 
         fetchTableData();
     }, [pdfId, token]);
+
+    useEffect(() => {
+        let filtered = tableData;
+
+        // Existing filtering logic here...
+
+        // Filter by search term, checking if the profession name includes the search term
+        if (searchTerm) {
+            filtered = filtered.filter(row => row.Professions.toLowerCase().includes(searchTerm.toLowerCase()));
+        }
+
+        setFilteredData(filtered);
+    }, [selectedDomain, filterTerms, tableData, searchTerm]); // Include searchTerm in the dependency array
+
 
     const handleOpenPDF = () => {
         axios.get(`https://fastapi-production-fffa.up.railway.app/Gallup/${pdfId}/pdf_similarities_download`, {
@@ -377,12 +391,22 @@ const Results = () => {
                         <div className="col-12 col-md-6">
                             <div className="card card-custom p-3">
                                 <div className="table-responsive results-table-div">
+                                    <div className="search-container">
+                                        <input
+                                            type="text"
+                                            placeholder="Поиск по профессиям..."
+                                            className="form-control"
+                                            value={searchTerm}
+                                            onChange={(e) => setSearchTerm(e.target.value)}
+                                        />
+                                    </div>
                                     {isLoading ? (
                                         <p>Loading...</p>
                                     ) : (
                                         <>
                                             {Array.isArray(filteredData) && filteredData.length > 0 ? (
                                                 <table className="results-table">
+
                                                     <thead>
                                                         <tr>
                                                             <th>Место</th>
